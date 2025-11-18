@@ -1,0 +1,160 @@
+<div class="w-full max-w-2xl mx-auto">
+  <div class="bg-white/10 dark:bg-slate-800/50 backdrop-blur-sm border border-white/20 dark:border-slate-700/50 rounded-lg shadow-xl p-8">
+      <div class="space-y-6">
+        <div class="text-center space-y-2">
+          <h3 class="text-2xl font-bold text-white">Envíanos un Mensaje</h3>
+          <p class="text-white/80 text-sm">Completa el formulario y nos pondremos en contacto contigo</p>
+        </div>
+
+        @if (isSubmitted) {
+          <div class="bg-green-500/20 border border-green-500/50 rounded-lg p-4 text-center">
+            <div class="flex items-center justify-center gap-2 text-green-300">
+              <lucide-icon name="check-circle" class="h-5 w-5"></lucide-icon>
+              <span class="font-semibold">¡Mensaje enviado exitosamente!</span>
+            </div>
+                  <p class="text-green-200/80 text-sm mt-2">Tu mensaje ha sido enviado a codes.labs.rc&#64;gmail.com. Te contactaremos pronto.</p>
+          </div>
+        } @else {
+          @if (errorMessage) {
+            <div class="bg-red-500/20 border border-red-500/50 rounded-lg p-4 text-center">
+              <div class="flex items-center justify-center gap-2 text-red-300">
+                <lucide-icon name="alert-circle" class="h-5 w-5"></lucide-icon>
+                <span class="font-semibold">Error al enviar</span>
+              </div>
+              <p class="text-red-200/80 text-sm mt-2">{{ errorMessage }}</p>
+            </div>
+          }
+          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6">
+            <!-- Nombre Contacto -->
+            <div class="space-y-2">
+              <label for="nombreContacto" class="block text-sm font-medium text-white">
+                Nombre Contacto <span class="text-red-400">*</span>
+              </label>
+              <input
+                id="nombreContacto"
+                type="text"
+                formControlName="nombreContacto"
+                placeholder="Ingresa tu nombre completo"
+                class="w-full px-4 py-3 rounded-lg bg-white/10 dark:bg-slate-700/50 border border-white/20 dark:border-slate-600/50 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                [class.border-red-500]="nombreContacto?.invalid && nombreContacto?.touched"
+              />
+              @if (nombreContacto?.invalid && nombreContacto?.touched) {
+                <p class="text-red-400 text-xs">
+                  @if (nombreContacto?.errors?.['required']) {
+                    El nombre de contacto es requerido
+                  } @else if (nombreContacto?.errors?.['minlength']) {
+                    El nombre debe tener al menos 2 caracteres
+                  }
+                </p>
+              }
+            </div>
+
+            <!-- Nombre Empresa -->
+            <div class="space-y-2">
+              <label for="nombreEmpresa" class="block text-sm font-medium text-white">
+                Nombre Empresa <span class="text-red-400">*</span>
+              </label>
+              <input
+                id="nombreEmpresa"
+                type="text"
+                formControlName="nombreEmpresa"
+                placeholder="Ingresa el nombre de tu empresa"
+                class="w-full px-4 py-3 rounded-lg bg-white/10 dark:bg-slate-700/50 border border-white/20 dark:border-slate-600/50 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                [class.border-red-500]="nombreEmpresa?.invalid && nombreEmpresa?.touched"
+              />
+              @if (nombreEmpresa?.invalid && nombreEmpresa?.touched) {
+                <p class="text-red-400 text-xs">
+                  @if (nombreEmpresa?.errors?.['required']) {
+                    El nombre de la empresa es requerido
+                  } @else if (nombreEmpresa?.errors?.['minlength']) {
+                    El nombre de la empresa debe tener al menos 2 caracteres
+                  }
+                </p>
+              }
+            </div>
+
+            <!-- Email Contacto -->
+            <div class="space-y-2">
+              <label for="emailContacto" class="block text-sm font-medium text-white">
+                Email Contacto <span class="text-red-400">*</span>
+              </label>
+              <input
+                id="emailContacto"
+                type="email"
+                formControlName="emailContacto"
+                placeholder="tu.email@empresa.com"
+                class="w-full px-4 py-3 rounded-lg bg-white/10 dark:bg-slate-700/50 border border-white/20 dark:border-slate-600/50 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                [class.border-red-500]="emailContacto?.invalid && emailContacto?.touched"
+              />
+              @if (emailContacto?.invalid && emailContacto?.touched) {
+                <p class="text-red-400 text-xs">
+                  @if (emailContacto?.errors?.['required']) {
+                    El email es requerido
+                  } @else if (emailContacto?.errors?.['email']) {
+                    Por favor ingresa un email válido
+                  }
+                </p>
+              }
+            </div>
+
+            <!-- Teléfono Contacto -->
+            <div class="space-y-2">
+              <label for="telefonoContacto" class="block text-sm font-medium text-white">
+                Teléfono Contacto <span class="text-red-400">*</span>
+              </label>
+              <input
+                id="telefonoContacto"
+                type="tel"
+                formControlName="telefonoContacto"
+                placeholder="+34 123 456 789"
+                class="w-full px-4 py-3 rounded-lg bg-white/10 dark:bg-slate-700/50 border border-white/20 dark:border-slate-600/50 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                [class.border-red-500]="telefonoContacto?.invalid && telefonoContacto?.touched"
+              />
+              @if (telefonoContacto?.invalid && telefonoContacto?.touched) {
+                <p class="text-red-400 text-xs">
+                  @if (telefonoContacto?.errors?.['required']) {
+                    El teléfono es requerido
+                  } @else if (telefonoContacto?.errors?.['pattern']) {
+                    Por favor ingresa un teléfono válido
+                  }
+                </p>
+              }
+            </div>
+
+            <!-- Comentarios - Editor de Texto Enriquecido -->
+            <div class="space-y-2">
+              <label for="comentarios" class="block text-sm font-medium text-white">
+                Comentarios
+              </label>
+              <div class="quill-editor-wrapper">
+                <quill-editor
+                  formControlName="comentarios"
+                  [modules]="quillModules"
+                  [style]="quillStyles"
+                  placeholder="Cuéntanos sobre tu proyecto o consulta..."
+                ></quill-editor>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="pt-6">
+              <button
+                type="submit"
+                [disabled]="isSubmitting || contactForm.invalid"
+                class="w-full bg-gradient-to-r from-cyan-500 to-cyan-600 text-white hover:from-cyan-600 hover:to-cyan-700 font-semibold shadow-lg shadow-cyan-500/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl px-8 py-4 flex items-center justify-center gap-2 text-lg min-h-[56px] transform hover:scale-[1.02] active:scale-[0.98]"
+              >
+                @if (isSubmitting) {
+                  <lucide-icon name="loader-2" class="h-6 w-6 animate-spin"></lucide-icon>
+                  <span>Enviando...</span>
+                } @else {
+                  <span>Enviar Mensaje</span>
+                  <lucide-icon name="send" class="h-6 w-6"></lucide-icon>
+                }
+              </button>
+            </div>
+          </form>
+        }
+      </div>
+    </div>
+</div>
+
