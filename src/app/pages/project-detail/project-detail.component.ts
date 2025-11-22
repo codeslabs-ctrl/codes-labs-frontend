@@ -61,11 +61,18 @@ export class ProjectDetailComponent implements OnInit {
       next: (response) => {
         if (response.success && response.data) {
           this.project = response.data;
-          // Organizar detalles por tipo
-          this.organizeDetails();
-          // Debug: Verificar que las tecnologías se carguen
+          // Debug: Verificar que los detalles se carguen
           console.log('Proyecto cargado:', this.project);
           console.log('Tecnologías:', this.project.technologies);
+          console.log('Detalles del proyecto:', this.project.details);
+          console.log('Cantidad de detalles:', this.project.details?.length || 0);
+          // Organizar detalles por tipo
+          this.organizeDetails();
+          console.log('Detalles organizados - Features:', this.featureDetails.length);
+          console.log('Detalles organizados - Technologies:', this.technologyDetails.length);
+          console.log('Detalles organizados - Security:', this.securityDetails.length);
+          console.log('Detalles organizados - Benefits:', this.benefitDetails.length);
+          console.log('Detalles organizados - Other:', this.otherDetails.length);
         } else {
           this.error = 'Proyecto no encontrado';
         }
@@ -94,7 +101,10 @@ export class ProjectDetailComponent implements OnInit {
    * Organiza los detalles del proyecto por tipo para mejor visualización
    */
   organizeDetails(): void {
-    if (!this.project?.details) return;
+    if (!this.project?.details) {
+      console.warn('No hay detalles en el proyecto');
+      return;
+    }
 
     // Resetear arrays
     this.featureDetails = [];
@@ -104,21 +114,36 @@ export class ProjectDetailComponent implements OnInit {
     this.otherDetails = [];
 
     this.project.details.forEach(detail => {
+      if (!detail || !detail.projectDetail) {
+        console.warn('Detalle inválido:', detail);
+        return;
+      }
+
       const content = detail.projectDetail.toLowerCase();
       
-      if (content.includes('## tecnologías') || content.includes('tecnologías frontend') || content.includes('tecnologías backend')) {
+      if (content.includes('## tecnologías') || content.includes('tecnologías frontend') || content.includes('tecnologías backend') || content.includes('tecnologías utilizadas')) {
         this.technologyDetails.push(detail);
       } else if (content.includes('## seguridad')) {
         this.securityDetails.push(detail);
-      } else if (content.includes('## beneficios')) {
+      } else if (content.includes('## beneficios') || content.includes('beneficios del sistema')) {
         this.benefitDetails.push(detail);
       } else if (content.includes('## gestión') || content.includes('## control') || content.includes('## sistema') || 
-                 content.includes('## historial') || content.includes('## informes') || content.includes('## características')) {
+                 content.includes('## historial') || content.includes('## informes') || content.includes('## características') ||
+                 content.includes('## roles') || content.includes('## pacientes') || content.includes('## consultas') ||
+                 content.includes('## médicos') || content.includes('## financiero')) {
         this.featureDetails.push(detail);
       } else {
         this.otherDetails.push(detail);
       }
     });
+
+    // Si no se organizó nada, poner todo en otherDetails como fallback
+    if (this.featureDetails.length === 0 && this.technologyDetails.length === 0 && 
+        this.securityDetails.length === 0 && this.benefitDetails.length === 0 && 
+        this.otherDetails.length === 0 && this.project.details.length > 0) {
+      console.warn('No se pudo organizar ningún detalle, usando fallback');
+      this.otherDetails = [...this.project.details];
+    }
   }
 
   /**

@@ -208,6 +208,24 @@
               </div>
             </div>
           }
+
+          <!-- Fallback: Si no hay detalles organizados pero sí hay detalles, mostrarlos todos -->
+          @if (featureDetails.length === 0 && technologyDetails.length === 0 && 
+               securityDetails.length === 0 && benefitDetails.length === 0 && 
+               otherDetails.length === 0 && project.details && project.details.length > 0) {
+            <div class="mb-10">
+              <div class="grid md:grid-cols-2 gap-6">
+                @for (detail of project.details; track detail.id) {
+                  <app-card class="bg-card border-border hover:border-cyan-500/50 hover:shadow-lg transition-all duration-300 h-full">
+                    <app-card-content class="p-6">
+                      <div [innerHTML]="markdownToHtml(detail.projectDetail)" class="prose prose-cyan dark:prose-invert max-w-none">
+                      </div>
+                    </app-card-content>
+                  </app-card>
+                }
+              </div>
+            </div>
+          }
         </div>
       }
 
