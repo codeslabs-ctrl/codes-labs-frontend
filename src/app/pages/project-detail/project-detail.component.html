@@ -63,6 +63,7 @@
               <lucide-icon *ngSwitchCase="'bot'" name="bot" class="h-10 w-10 text-white"></lucide-icon>
               <lucide-icon *ngSwitchCase="'rocket'" name="rocket" class="h-10 w-10 text-white"></lucide-icon>
               <lucide-icon *ngSwitchCase="'activity'" name="activity" class="h-10 w-10 text-white"></lucide-icon>
+              <lucide-icon *ngSwitchCase="'briefcase-medical'" name="briefcase-medical" class="h-10 w-10 text-white"></lucide-icon>
               <lucide-icon *ngSwitchDefault name="sparkles" class="h-10 w-10 text-white"></lucide-icon>
             </ng-container>
           </div>
@@ -104,39 +105,147 @@
         }
       </div>
 
-      <!-- Additional Information -->
-      <div class="grid md:grid-cols-2 gap-8 mb-12">
-        <app-card class="bg-card border-border">
-          <app-card-content class="p-8">
-            <h3 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-              <lucide-icon name="target" class="h-5 w-5 text-cyan-500"></lucide-icon>
-              Objetivo del Proyecto
-            </h3>
-            <p class="text-muted-foreground leading-relaxed">
-              Este proyecto fue desarrollado con el objetivo de {{ project.description.toLowerCase() }}. 
-              Utilizamos las mejores prácticas y tecnologías modernas para garantizar un rendimiento óptimo 
-              y una experiencia de usuario excepcional.
-            </p>
-          </app-card-content>
-        </app-card>
+      <!-- Project Details Section -->
+      @if (project.details && project.details.length > 0) {
+        <div class="mb-12">
+          <h2 class="text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
+            <lucide-icon name="file-text" class="h-8 w-8 text-cyan-500"></lucide-icon>
+            Detalles del Proyecto
+          </h2>
+          
+          <!-- Features Grid (Características principales) -->
+          @if (featureDetails.length > 0) {
+            <div class="mb-10">
+              <h3 class="text-2xl font-semibold text-foreground mb-6 flex items-center gap-2">
+                <lucide-icon name="sparkles" class="h-6 w-6 text-cyan-500"></lucide-icon>
+                Características Principales
+              </h3>
+              <div class="grid md:grid-cols-2 gap-6">
+                @for (detail of featureDetails; track detail.id) {
+                  <app-card class="bg-card border-border hover:border-cyan-500/50 hover:shadow-lg transition-all duration-300 h-full">
+                    <app-card-content class="p-6">
+                      <div [innerHTML]="markdownToHtml(detail.projectDetail)" class="prose prose-cyan dark:prose-invert max-w-none">
+                      </div>
+                    </app-card-content>
+                  </app-card>
+                }
+              </div>
+            </div>
+          }
 
-        <app-card class="bg-card border-border">
-          <app-card-content class="p-8">
-            <h3 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-              <lucide-icon name="award" class="h-5 w-5 text-cyan-500"></lucide-icon>
-              Resultados Alcanzados
-            </h3>
-            <ul class="space-y-3 text-muted-foreground">
-              @for (stat of getStats(project); track stat.key) {
-                <li class="flex items-center gap-2">
-                  <lucide-icon name="check-circle" class="h-4 w-4 text-cyan-500"></lucide-icon>
-                  <span><strong class="text-foreground">{{ stat.key }}:</strong> {{ stat.value }}</span>
-                </li>
-              }
-            </ul>
-          </app-card-content>
-        </app-card>
-      </div>
+          <!-- Technologies Section (Tecnologías) -->
+          @if (technologyDetails.length > 0) {
+            <div class="mb-10">
+              <h3 class="text-2xl font-semibold text-foreground mb-6 flex items-center gap-2">
+                <lucide-icon name="code" class="h-6 w-6 text-cyan-500"></lucide-icon>
+                Tecnologías Utilizadas
+              </h3>
+              <div class="grid md:grid-cols-2 gap-6">
+                @for (detail of technologyDetails; track detail.id) {
+                  <app-card class="bg-gradient-to-br from-cyan-50/50 to-cyan-100/30 dark:from-cyan-950/20 dark:to-cyan-900/10 border-cyan-500/30 hover:shadow-lg transition-all duration-300">
+                    <app-card-content class="p-6">
+                      <div [innerHTML]="markdownToHtml(detail.projectDetail)" class="prose prose-cyan dark:prose-invert max-w-none">
+                      </div>
+                    </app-card-content>
+                  </app-card>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Security Section (Seguridad) -->
+          @if (securityDetails.length > 0) {
+            <div class="mb-10">
+              <h3 class="text-2xl font-semibold text-foreground mb-6 flex items-center gap-2">
+                <lucide-icon name="shield" class="h-6 w-6 text-cyan-500"></lucide-icon>
+                Seguridad
+              </h3>
+              <div class="grid gap-6">
+                @for (detail of securityDetails; track detail.id) {
+                  <app-card class="bg-gradient-to-br from-slate-50 to-slate-100/50 dark:from-slate-900/30 dark:to-slate-800/20 border-slate-500/30 hover:shadow-lg transition-all duration-300">
+                    <app-card-content class="p-6">
+                      <div [innerHTML]="markdownToHtml(detail.projectDetail)" class="prose prose-cyan dark:prose-invert max-w-none">
+                      </div>
+                    </app-card-content>
+                  </app-card>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Benefits Section (Beneficios) -->
+          @if (benefitDetails.length > 0) {
+            <div class="mb-10">
+              <h3 class="text-2xl font-semibold text-foreground mb-6 flex items-center gap-2">
+                <lucide-icon name="award" class="h-6 w-6 text-cyan-500"></lucide-icon>
+                Beneficios del Sistema
+              </h3>
+              <div class="grid gap-6">
+                @for (detail of benefitDetails; track detail.id) {
+                  <app-card class="bg-gradient-to-br from-green-50/50 to-emerald-100/30 dark:from-green-950/20 dark:to-emerald-900/10 border-green-500/30 hover:shadow-lg transition-all duration-300">
+                    <app-card-content class="p-6">
+                      <div [innerHTML]="markdownToHtml(detail.projectDetail)" class="prose prose-cyan dark:prose-invert max-w-none">
+                      </div>
+                    </app-card-content>
+                  </app-card>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Other Details (Otros detalles) -->
+          @if (otherDetails.length > 0) {
+            <div class="mb-10">
+              <div class="grid md:grid-cols-2 gap-6">
+                @for (detail of otherDetails; track detail.id) {
+                  <app-card class="bg-card border-border hover:border-cyan-500/50 hover:shadow-lg transition-all duration-300 h-full">
+                    <app-card-content class="p-6">
+                      <div [innerHTML]="markdownToHtml(detail.projectDetail)" class="prose prose-cyan dark:prose-invert max-w-none">
+                      </div>
+                    </app-card-content>
+                  </app-card>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Results Summary (if no details available, show stats) -->
+      @if (!project.details || project.details.length === 0) {
+        <div class="grid md:grid-cols-2 gap-8 mb-12">
+          <app-card class="bg-card border-border">
+            <app-card-content class="p-8">
+              <h3 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <lucide-icon name="target" class="h-5 w-5 text-cyan-500"></lucide-icon>
+                Objetivo del Proyecto
+              </h3>
+              <p class="text-muted-foreground leading-relaxed">
+                Este proyecto fue desarrollado con el objetivo de {{ project.description.toLowerCase() }}. 
+                Utilizamos las mejores prácticas y tecnologías modernas para garantizar un rendimiento óptimo 
+                y una experiencia de usuario excepcional.
+              </p>
+            </app-card-content>
+          </app-card>
+
+          <app-card class="bg-card border-border">
+            <app-card-content class="p-8">
+              <h3 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <lucide-icon name="award" class="h-5 w-5 text-cyan-500"></lucide-icon>
+                Resultados Alcanzados
+              </h3>
+              <ul class="space-y-3 text-muted-foreground">
+                @for (stat of getStats(project); track stat.key) {
+                  <li class="flex items-center gap-2">
+                    <lucide-icon name="check-circle" class="h-4 w-4 text-cyan-500"></lucide-icon>
+                    <span><strong class="text-foreground">{{ stat.key }}:</strong> {{ stat.value }}</span>
+                  </li>
+                }
+              </ul>
+            </app-card-content>
+          </app-card>
+        </div>
+      }
 
       <!-- Call to Action -->
       <div class="text-center">

@@ -1,3 +1,13 @@
+export interface ProjectDetail {
+  id: string;
+  projectId: string;
+  projectDetail: string;
+  displayOrder: number;
+  createdAt?: string;
+  updatedAt?: string;
+  isActive?: boolean;
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -6,6 +16,7 @@ export interface Project {
   iconName: string;
   stats: { [key: string]: string };
   technologies: string[];
+  details?: ProjectDetail[];
   createdAt?: string;
   updatedAt?: string;
   isActive?: boolean;
