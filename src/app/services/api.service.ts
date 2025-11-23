@@ -31,6 +31,89 @@ export class ApiService {
       );
   }
 
+  createProject(projectData: {
+    title: string;
+    description: string;
+    category: string;
+    iconName: string;
+    displayOrder?: number;
+    isActive?: boolean;
+    stats?: { [key: string]: string };
+    technologies?: string[];
+  }): Observable<SingleProjectResponse> {
+    return this.http.post<SingleProjectResponse>(`${this.apiUrl}/projects`, projectData)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  updateProject(id: string, projectData: {
+    title?: string;
+    description?: string;
+    category?: string;
+    iconName?: string;
+    displayOrder?: number;
+    isActive?: boolean;
+    stats?: { [key: string]: string };
+    technologies?: string[];
+  }): Observable<SingleProjectResponse> {
+    return this.http.put<SingleProjectResponse>(`${this.apiUrl}/projects/${id}`, projectData)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  deleteProject(id: string): Observable<{ success: boolean; message: string }> {
+    return this.http.delete<{ success: boolean; message: string }>(`${this.apiUrl}/projects/${id}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  // Project Details
+  createProjectDetail(projectId: string, detailData: {
+    projectDetail: string;
+    displayOrder?: number;
+    isActive?: boolean;
+  }): Observable<{ success: boolean; data: any; message: string }> {
+    return this.http.post<{ success: boolean; data: any; message: string }>(
+      `${this.apiUrl}/projects/${projectId}/details`,
+      detailData
+    ).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  updateProjectDetail(detailId: string, detailData: {
+    projectDetail?: string;
+    displayOrder?: number;
+    isActive?: boolean;
+  }): Observable<{ success: boolean; data: any; message: string }> {
+    return this.http.put<{ success: boolean; data: any; message: string }>(
+      `${this.apiUrl}/projects/details/${detailId}`,
+      detailData
+    ).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  deleteProjectDetail(detailId: string): Observable<{ success: boolean; message: string }> {
+    return this.http.delete<{ success: boolean; message: string }>(
+      `${this.apiUrl}/projects/details/${detailId}`
+    ).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  updateAllProjectDetails(projectId: string, details: any[]): Observable<{ success: boolean; data: any[]; message: string }> {
+    return this.http.put<{ success: boolean; data: any[]; message: string }>(
+      `${this.apiUrl}/projects/${projectId}/details`,
+      { details }
+    ).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   // Company Values
   getCompanyValues(): Observable<CompanyValueResponse> {
     return this.http.get<CompanyValueResponse>(`${this.apiUrl}/company-values`)

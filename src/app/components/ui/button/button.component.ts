@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { cn } from '../../../../lib/utils';
 
@@ -12,6 +12,7 @@ import { cn } from '../../../../lib/utils';
       [type]="type"
       [disabled]="disabled"
       [attr.aria-disabled]="disabled"
+      (click)="onClick.emit($event)"
     >
       <ng-content></ng-content>
     </button>
@@ -23,6 +24,8 @@ export class ButtonComponent {
   @Input() size: 'sm' | 'md' | 'lg' = 'md';
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
   @Input() disabled = false;
+  @Output() click = new EventEmitter<MouseEvent>();
+  @Output() onClick = new EventEmitter<MouseEvent>();
 
   get buttonClass(): string {
     return cn(

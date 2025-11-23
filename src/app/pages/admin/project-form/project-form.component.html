@@ -1,0 +1,172 @@
+<div class="min-h-screen bg-background p-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Botón de regreso -->
+    <div class="mb-4">
+      <app-button (click)="cancel()" [variant]="'outline'" size="sm">
+        <lucide-icon name="arrow-left" class="mr-2 h-4 w-4"></lucide-icon>
+        Regresar a la lista
+      </app-button>
+    </div>
+    
+    <app-card class="bg-card border-border">
+      <app-card-header>
+        <app-card-title>
+          {{ project ? 'Editar Proyecto' : 'Nuevo Proyecto' }}
+        </app-card-title>
+      </app-card-header>
+      <app-card-content>
+        <form [formGroup]="projectForm" (ngSubmit)="saveProject()" class="space-y-6">
+          <!-- Título -->
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-2">Título *</label>
+            <input
+              type="text"
+              formControlName="title"
+              class="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              [class.border-red-500]="projectForm.get('title')?.invalid && projectForm.get('title')?.touched"
+            />
+            @if (projectForm.get('title')?.invalid && projectForm.get('title')?.touched) {
+              <p class="text-red-500 text-sm mt-1">El título es requerido</p>
+            }
+          </div>
+
+          <!-- Descripción -->
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-2">Descripción *</label>
+            <textarea
+              formControlName="description"
+              rows="4"
+              class="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              [class.border-red-500]="projectForm.get('description')?.invalid && projectForm.get('description')?.touched"
+            ></textarea>
+            @if (projectForm.get('description')?.invalid && projectForm.get('description')?.touched) {
+              <p class="text-red-500 text-sm mt-1">La descripción es requerida</p>
+            }
+          </div>
+
+          <!-- Categoría e Icono -->
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-foreground mb-2">Categoría *</label>
+              <input
+                type="text"
+                formControlName="category"
+                class="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                [class.border-red-500]="projectForm.get('category')?.invalid && projectForm.get('category')?.touched"
+              />
+              @if (projectForm.get('category')?.invalid && projectForm.get('category')?.touched) {
+                <p class="text-red-500 text-sm mt-1">La categoría es requerida</p>
+              }
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-foreground mb-2">Icono *</label>
+              <input
+                type="text"
+                formControlName="iconName"
+                placeholder="sparkles, rocket, bot, etc."
+                class="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              />
+            </div>
+          </div>
+
+          <!-- Orden y Estado -->
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-foreground mb-2">Orden de Visualización</label>
+              <input
+                type="number"
+                formControlName="displayOrder"
+                min="0"
+                class="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              />
+            </div>
+            <div class="flex items-center gap-2 mt-8">
+              <input
+                type="checkbox"
+                formControlName="isActive"
+                id="isActive"
+                class="w-4 h-4"
+              />
+              <label for="isActive" class="text-sm font-medium text-foreground">Proyecto Activo</label>
+            </div>
+          </div>
+
+          <!-- Estadísticas -->
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <label class="block text-sm font-medium text-foreground">Estadísticas</label>
+              <app-button type="button" (click)="addStat()" size="sm" [variant]="'outline'">
+                <lucide-icon name="plus" class="mr-2 h-4 w-4"></lucide-icon>
+                Agregar
+              </app-button>
+            </div>
+            <div formArrayName="stats" class="space-y-3">
+              @for (statGroup of statsFormArray.controls; track $index) {
+                <div class="flex gap-2" [formGroup]="$any(statGroup)">
+                  <input
+                    type="text"
+                    formControlName="key"
+                    placeholder="Clave (ej: accuracy)"
+                    class="flex-1 px-4 py-2 border border-border rounded-lg bg-background text-foreground"
+                  />
+                  <input
+                    type="text"
+                    formControlName="value"
+                    placeholder="Valor (ej: 95%)"
+                    class="flex-1 px-4 py-2 border border-border rounded-lg bg-background text-foreground"
+                  />
+                  <app-button type="button" (click)="removeStat($index)" size="sm" [variant]="'outline'">
+                    <lucide-icon name="x" class="h-4 w-4"></lucide-icon>
+                  </app-button>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Tecnologías -->
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <label class="block text-sm font-medium text-foreground">Tecnologías</label>
+              <app-button type="button" (click)="addTechnology()" size="sm" [variant]="'outline'">
+                <lucide-icon name="plus" class="mr-2 h-4 w-4"></lucide-icon>
+                Agregar
+              </app-button>
+            </div>
+            <div formArrayName="technologies" class="space-y-2">
+              @for (tech of technologiesFormArray.controls; track $index) {
+                <div class="flex gap-2">
+                  <input
+                    type="text"
+                    [formControl]="$any(tech)"
+                    placeholder="Nombre de la tecnología"
+                    class="flex-1 px-4 py-2 border border-border rounded-lg bg-background text-foreground"
+                  />
+                  <app-button type="button" (click)="removeTechnology($index)" size="sm" [variant]="'outline'">
+                    <lucide-icon name="x" class="h-4 w-4"></lucide-icon>
+                  </app-button>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Botones de acción -->
+          <div class="flex gap-4 justify-end">
+            <app-button type="button" (click)="cancel()" [variant]="'outline'">
+              Cancelar
+            </app-button>
+            <app-button type="submit" [variant]="'default'" [disabled]="isSubmitting">
+              @if (isSubmitting) {
+                <lucide-icon name="loader-2" class="mr-2 h-4 w-4 animate-spin"></lucide-icon>
+                Guardando...
+              } @else {
+                <lucide-icon name="save" class="mr-2 h-4 w-4"></lucide-icon>
+                {{ project ? 'Actualizar' : 'Crear' }}
+              }
+            </app-button>
+          </div>
+        </form>
+      </app-card-content>
+    </app-card>
+  </div>
+</div>
+

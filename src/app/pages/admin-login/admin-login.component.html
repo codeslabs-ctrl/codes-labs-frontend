@@ -1,0 +1,54 @@
+<div class="min-h-screen bg-background flex items-center justify-center p-6">
+  <div class="max-w-md w-full">
+    <app-card class="bg-card border-border">
+      <app-card-header>
+        <div class="flex items-center justify-center mb-4">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-primary flex items-center justify-center">
+            <lucide-icon name="shield" class="h-8 w-8 text-white"></lucide-icon>
+          </div>
+        </div>
+        <app-card-title class="text-center">Acceso de Administración</app-card-title>
+      </app-card-header>
+      <app-card-content>
+        <form (ngSubmit)="login()" class="space-y-6">
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-2">API Key</label>
+            <input
+              type="password"
+              [(ngModel)]="apiKey"
+              name="apiKey"
+              class="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              placeholder="Ingresa tu API Key"
+              autocomplete="off"
+            />
+          </div>
+
+          @if (error) {
+            <div class="bg-red-500/20 border border-red-500/50 rounded-lg p-3">
+              <p class="text-red-300 text-sm">{{ error }}</p>
+            </div>
+          }
+
+          <div class="mt-8">
+            <app-button type="submit" [variant]="'default'" class="w-full" [disabled]="isLoading">
+            @if (isLoading) {
+              <lucide-icon name="loader-2" class="mr-2 h-4 w-4 animate-spin"></lucide-icon>
+              Verificando...
+            } @else {
+              <lucide-icon name="log-in" class="mr-2 h-4 w-4"></lucide-icon>
+              Iniciar Sesión
+            }
+            </app-button>
+          </div>
+
+          <div class="text-center">
+            <a routerLink="/" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              Volver al inicio
+            </a>
+          </div>
+        </form>
+      </app-card-content>
+    </app-card>
+  </div>
+</div>
+

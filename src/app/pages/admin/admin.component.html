@@ -1,0 +1,273 @@
+<div class="min-h-screen bg-background p-6">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h1 class="text-4xl font-bold text-foreground mb-2">Panel de Administración</h1>
+          <p class="text-muted-foreground">Gestiona tus proyectos desde aquí</p>
+        </div>
+        <div class="flex gap-2">
+          <app-button (click)="createProject()" [variant]="'default'">
+            <lucide-icon name="plus" class="mr-2 h-4 w-4"></lucide-icon>
+            Nuevo Proyecto
+          </app-button>
+          <app-button (click)="authService.logout()" [variant]="'outline'">
+            <lucide-icon name="log-out" class="mr-2 h-4 w-4"></lucide-icon>
+            Salir
+          </app-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    @if (isLoading) {
+      <div class="flex justify-center items-center py-20">
+        <div class="text-center space-y-4">
+          <lucide-icon name="loader-2" class="h-12 w-12 text-cyan-500 animate-spin mx-auto"></lucide-icon>
+          <p class="text-muted-foreground">Cargando proyectos...</p>
+        </div>
+      </div>
+    }
+
+    <!-- Error State -->
+    @else if (error) {
+      <app-card class="bg-red-500/20 border-red-500/50">
+        <app-card-content class="p-6">
+          <div class="flex items-center gap-3">
+            <lucide-icon name="alert-circle" class="h-6 w-6 text-red-500"></lucide-icon>
+            <p class="text-red-300">{{ error }}</p>
+          </div>
+        </app-card-content>
+      </app-card>
+    }
+
+    <!-- Projects List -->
+    @else {
+      <!-- Búsqueda y Filtros -->
+      <app-card class="bg-card border-border">
+        <app-card-content class="p-4">
+          <div class="grid md:grid-cols-3 gap-4">
+            <!-- Búsqueda -->
+            <div>
+              <label class="block text-sm font-medium text-foreground mb-2">Buscar</label>
+              <div class="relative">
+                <lucide-icon name="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground"></lucide-icon>
+                <input
+                  type="text"
+                  [(ngModel)]="searchTerm"
+                  (ngModelChange)="onSearchChange()"
+                  placeholder="Buscar por título, descripción, categoría..."
+                  class="w-full pl-10 pr-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                />
+              </div>
+            </div>
+            <!-- Filtro por categoría -->
+            <div>
+              <label class="block text-sm font-medium text-foreground mb-2">Categoría</label>
+              <select
+                [(ngModel)]="filterCategory"
+                (ngModelChange)="onCategoryFilterChange()"
+                class="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              >
+                <option value="">Todas las categorías</option>
+                @for (category of categories; track category) {
+                  <option [value]="category">{{ category }}</option>
+                }
+              </select>
+            </div>
+            <!-- Botón limpiar filtros -->
+            <div class="flex items-end">
+              <app-button (click)="clearFilters()" [variant]="'outline'" class="w-full">
+                <lucide-icon name="x" class="mr-2 h-4 w-4"></lucide-icon>
+                Limpiar Filtros
+              </app-button>
+            </div>
+          </div>
+          @if (filteredProjects.length !== projects.length) {
+            <div class="mt-4 text-sm text-muted-foreground">
+              Mostrando {{ filteredProjects.length }} de {{ projects.length }} proyectos
+            </div>
+          }
+        </app-card-content>
+      </app-card>
+
+      <!-- Separador con margen explícito -->
+      <div class="h-12"></div>
+
+      <!-- Tabla de Proyectos -->
+      <app-card class="bg-card border-border">
+        <app-card-content class="p-0">
+          @if (filteredProjects.length === 0) {
+            <div class="p-12 text-center">
+              <lucide-icon name="folder-x" class="h-12 w-12 text-muted-foreground mx-auto mb-4"></lucide-icon>
+              <p class="text-muted-foreground text-lg">No hay proyectos registrados</p>
+              <app-button (click)="createProject()" [variant]="'default'" class="mt-4">
+                Crear Primer Proyecto
+              </app-button>
+            </div>
+          } @else {
+            <!-- Información de paginación -->
+            <div class="px-6 py-4 border-b border-border bg-muted/30 flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div class="text-sm text-muted-foreground">
+                Mostrando {{ startIndex }} - {{ endIndex }} de {{ filteredProjects.length }} proyectos
+              </div>
+              <div class="flex items-center gap-2">
+                <label class="text-sm text-muted-foreground">Por página:</label>
+                <select
+                  [(ngModel)]="itemsPerPage"
+                  (ngModelChange)="currentPage = 1"
+                  class="px-3 py-1 border border-border rounded-lg bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                >
+                  <option [value]="5">5</option>
+                  <option [value]="10">10</option>
+                  <option [value]="20">20</option>
+                  <option [value]="50">50</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Tabla responsiva -->
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-muted/50 border-b border-border">
+                  <tr>
+                    <th class="px-3 sm:px-4 md:px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Icono</th>
+                    <th class="px-3 sm:px-4 md:px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider min-w-[150px]">Título</th>
+                    <th class="px-3 sm:px-4 md:px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider hidden md:table-cell">Categoría</th>
+                    <th class="px-3 sm:px-4 md:px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider hidden xl:table-cell max-w-[200px]">Descripción</th>
+                    <th class="px-3 sm:px-4 md:px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider hidden lg:table-cell">Tecnologías</th>
+                    <th class="px-3 sm:px-4 md:px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider hidden md:table-cell">Estado</th>
+                    <th class="px-3 sm:px-4 md:px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-background divide-y divide-border">
+                  @for (project of paginatedProjects; track project.id) {
+                    <tr class="hover:bg-muted/30 transition-colors">
+                      <td class="px-3 sm:px-4 md:px-6 py-4 whitespace-nowrap">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-primary flex items-center justify-center">
+                          <ng-container [ngSwitch]="project.iconName">
+                            <lucide-icon *ngSwitchCase="'bar-chart-3'" name="bar-chart-3" class="h-4 w-4 sm:h-5 sm:w-5 text-white"></lucide-icon>
+                            <lucide-icon *ngSwitchCase="'bot'" name="bot" class="h-4 w-4 sm:h-5 sm:w-5 text-white"></lucide-icon>
+                            <lucide-icon *ngSwitchCase="'rocket'" name="rocket" class="h-4 w-4 sm:h-5 sm:w-5 text-white"></lucide-icon>
+                            <lucide-icon *ngSwitchCase="'activity'" name="activity" class="h-4 w-4 sm:h-5 sm:w-5 text-white"></lucide-icon>
+                            <lucide-icon *ngSwitchCase="'briefcase-medical'" name="briefcase-medical" class="h-4 w-4 sm:h-5 sm:w-5 text-white"></lucide-icon>
+                            <lucide-icon *ngSwitchDefault name="sparkles" class="h-4 w-4 sm:h-5 sm:w-5 text-white"></lucide-icon>
+                          </ng-container>
+                        </div>
+                      </td>
+                      <td class="px-3 sm:px-4 md:px-6 py-4">
+                        <div class="text-sm font-medium text-foreground break-words">{{ project.title }}</div>
+                        <!-- Mostrar categoría y estado en móvil -->
+                        <div class="md:hidden mt-1 flex flex-wrap gap-1">
+                          <app-badge [variant]="'secondary'" class="text-xs">{{ project.category }}</app-badge>
+                          @if (project.isActive) {
+                            <app-badge [variant]="'default'" class="text-xs">Activo</app-badge>
+                          } @else {
+                            <app-badge [variant]="'outline'" class="text-xs text-red-500">Inactivo</app-badge>
+                          }
+                        </div>
+                      </td>
+                      <td class="px-3 sm:px-4 md:px-6 py-4 whitespace-nowrap hidden md:table-cell">
+                        <app-badge [variant]="'secondary'">{{ project.category }}</app-badge>
+                      </td>
+                      <td class="px-3 sm:px-4 md:px-6 py-4 hidden xl:table-cell">
+                        <div class="text-sm text-muted-foreground max-w-[300px] line-clamp-2" [title]="project.description">
+                          {{ project.description }}
+                        </div>
+                      </td>
+                      <td class="px-3 sm:px-4 md:px-6 py-4 hidden lg:table-cell">
+                        <div class="flex flex-wrap gap-1 max-w-[150px]">
+                          @for (tech of project.technologies.slice(0, 2); track tech) {
+                            <app-badge [variant]="'outline'" class="text-xs">{{ tech }}</app-badge>
+                          }
+                          @if (project.technologies.length > 2) {
+                            <app-badge [variant]="'outline'" class="text-xs">+{{ project.technologies.length - 2 }}</app-badge>
+                          }
+                        </div>
+                      </td>
+                      <td class="px-3 sm:px-4 md:px-6 py-4 whitespace-nowrap hidden md:table-cell">
+                        @if (project.isActive) {
+                          <app-badge [variant]="'default'" class="text-xs">Activo</app-badge>
+                        } @else {
+                          <app-badge [variant]="'outline'" class="text-xs text-red-500">Inactivo</app-badge>
+                        }
+                      </td>
+                      <td class="px-3 sm:px-4 md:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <div class="flex justify-end gap-1">
+                          <app-button (click)="editProject(project)" size="sm" [variant]="'outline'" title="Editar" class="p-1.5">
+                            <lucide-icon name="edit" class="h-3.5 w-3.5 sm:h-4 sm:w-4"></lucide-icon>
+                          </app-button>
+                          <app-button (click)="manageDetails(project)" size="sm" [variant]="'outline'" title="Gestionar Detalles" class="p-1.5">
+                            <lucide-icon name="file-text" class="h-3.5 w-3.5 sm:h-4 sm:w-4"></lucide-icon>
+                          </app-button>
+                          <app-button (click)="deleteProject(project)" size="sm" [variant]="'outline'" class="text-red-500 hover:text-red-700 p-1.5" title="Eliminar">
+                            <lucide-icon name="trash-2" class="h-3.5 w-3.5 sm:h-4 sm:w-4"></lucide-icon>
+                          </app-button>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Controles de paginación -->
+            @if (totalPages > 1) {
+              <div class="px-6 py-4 border-t border-border bg-muted/30 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div class="text-sm text-muted-foreground">
+                  Página {{ currentPage }} de {{ totalPages }}
+                </div>
+                <div class="flex items-center gap-2">
+                  <app-button 
+                    (click)="previousPage()" 
+                    [variant]="'outline'" 
+                    size="sm"
+                    [disabled]="currentPage === 1"
+                    title="Página anterior"
+                  >
+                    <lucide-icon name="chevron-left" class="h-4 w-4"></lucide-icon>
+                  </app-button>
+                  
+                  <div class="flex gap-1">
+                    @if (currentPage > 3) {
+                      <app-button (click)="goToPage(1)" [variant]="'outline'" size="sm">1</app-button>
+                      @if (currentPage > 4) {
+                        <span class="px-2 text-muted-foreground">...</span>
+                      }
+                    }
+                    @for (page of getPageNumbers(); track page) {
+                      <app-button 
+                        (click)="goToPage(page)" 
+                        [variant]="currentPage === page ? 'default' : 'outline'" 
+                        size="sm"
+                      >
+                        {{ page }}
+                      </app-button>
+                    }
+                    @if (currentPage < totalPages - 2) {
+                      @if (currentPage < totalPages - 3) {
+                        <span class="px-2 text-muted-foreground">...</span>
+                      }
+                      <app-button (click)="goToPage(totalPages)" [variant]="'outline'" size="sm">{{ totalPages }}</app-button>
+                    }
+                  </div>
+                  
+                  <app-button 
+                    (click)="nextPage()" 
+                    [variant]="'outline'" 
+                    size="sm"
+                    [disabled]="currentPage === totalPages"
+                    title="Página siguiente"
+                  >
+                    <lucide-icon name="chevron-right" class="h-4 w-4"></lucide-icon>
+                  </app-button>
+                </div>
+              </div>
+            }
+          }
+        </app-card-content>
+      </app-card>
+    }
+  </div>
+</div>
