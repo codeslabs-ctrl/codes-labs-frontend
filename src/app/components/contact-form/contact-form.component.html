@@ -1,5 +1,5 @@
 <div class="w-full max-w-2xl mx-auto">
-  <div class="bg-white/10 dark:bg-slate-800/50 backdrop-blur-sm border border-white/20 dark:border-slate-700/50 rounded-lg shadow-xl p-8">
+  <div class="bg-[#0C1018]/80 backdrop-blur-sm border border-[#B0BEC5]/50 rounded-lg shadow-xl p-8">
       <div class="space-y-6">
         <div class="text-center space-y-4">
           <h3 class="text-2xl font-bold text-white">Envíanos un Mensaje</h3>
@@ -11,7 +11,7 @@
               href="https://www.facebook.com/profile.php?id=61582361592677" 
               target="_blank" 
               rel="noopener noreferrer"
-              class="text-white/80 hover:text-cyan-400 transition-all duration-300 group"
+              class="text-white/80 hover:text-[#00C6FF] transition-all duration-300 group"
               aria-label="Facebook"
               title="Facebook"
             >
@@ -23,7 +23,7 @@
               href="https://www.instagram.com/codeslabsia/" 
               target="_blank" 
               rel="noopener noreferrer"
-              class="text-white/80 hover:text-cyan-400 transition-all duration-300 group"
+              class="text-white/80 hover:text-[#00C6FF] transition-all duration-300 group"
               aria-label="Instagram"
               title="Instagram"
             >
@@ -35,7 +35,7 @@
               href="https://wa.me/584149015355" 
               target="_blank" 
               rel="noopener noreferrer"
-              class="text-white/80 hover:text-cyan-400 transition-all duration-300 group"
+              class="text-white/80 hover:text-[#00C6FF] transition-all duration-300 group"
               aria-label="WhatsApp"
               title="WhatsApp"
             >
@@ -75,7 +75,7 @@
                 type="text"
                 formControlName="nombreContacto"
                 placeholder="Ingresa tu nombre completo"
-                class="w-full px-4 py-3 rounded-lg bg-white/10 dark:bg-slate-700/50 border border-white/20 dark:border-slate-600/50 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                class="w-full px-4 py-3 rounded-lg bg-[#0C1018]/50 border border-[#B0BEC5]/50 text-white placeholder:text-[#B0BEC5]/50 focus:outline-none focus:ring-2 focus:ring-[#00C6FF] focus:border-transparent transition-all"
                 [class.border-red-500]="nombreContacto?.invalid && nombreContacto?.touched"
               />
               @if (nombreContacto?.invalid && nombreContacto?.touched) {
@@ -99,7 +99,7 @@
                 type="text"
                 formControlName="nombreEmpresa"
                 placeholder="Ingresa el nombre de tu empresa"
-                class="w-full px-4 py-3 rounded-lg bg-white/10 dark:bg-slate-700/50 border border-white/20 dark:border-slate-600/50 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                class="w-full px-4 py-3 rounded-lg bg-[#0C1018]/50 border border-[#B0BEC5]/50 text-white placeholder:text-[#B0BEC5]/50 focus:outline-none focus:ring-2 focus:ring-[#00C6FF] focus:border-transparent transition-all"
                 [class.border-red-500]="nombreEmpresa?.invalid && nombreEmpresa?.touched"
               />
               @if (nombreEmpresa?.invalid && nombreEmpresa?.touched) {
@@ -123,7 +123,7 @@
                 type="email"
                 formControlName="emailContacto"
                 placeholder="tu.email@empresa.com"
-                class="w-full px-4 py-3 rounded-lg bg-white/10 dark:bg-slate-700/50 border border-white/20 dark:border-slate-600/50 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                class="w-full px-4 py-3 rounded-lg bg-[#0C1018]/50 border border-[#B0BEC5]/50 text-white placeholder:text-[#B0BEC5]/50 focus:outline-none focus:ring-2 focus:ring-[#00C6FF] focus:border-transparent transition-all"
                 [class.border-red-500]="emailContacto?.invalid && emailContacto?.touched"
               />
               @if (emailContacto?.invalid && emailContacto?.touched) {
@@ -147,7 +147,7 @@
                 type="tel"
                 formControlName="telefonoContacto"
                 placeholder="+34 123 456 789"
-                class="w-full px-4 py-3 rounded-lg bg-white/10 dark:bg-slate-700/50 border border-white/20 dark:border-slate-600/50 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                class="w-full px-4 py-3 rounded-lg bg-[#0C1018]/50 border border-[#B0BEC5]/50 text-white placeholder:text-[#B0BEC5]/50 focus:outline-none focus:ring-2 focus:ring-[#00C6FF] focus:border-transparent transition-all"
                 [class.border-red-500]="telefonoContacto?.invalid && telefonoContacto?.touched"
               />
               @if (telefonoContacto?.invalid && telefonoContacto?.touched) {
@@ -177,20 +177,36 @@
             </div>
 
             <!-- Submit Button -->
-            <div class="pt-6">
+            <div class="pt-6 space-y-4">
               <button
                 type="submit"
                 [disabled]="isSubmitting || contactForm.invalid"
-                class="w-full bg-gradient-to-r from-cyan-500 to-cyan-600 text-white hover:from-cyan-600 hover:to-cyan-700 font-semibold shadow-lg shadow-cyan-500/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl px-8 py-4 flex items-center justify-center gap-2 text-lg min-h-[56px] transform hover:scale-[1.02] active:scale-[0.98]"
+                class="w-full bg-gradient-to-r from-[#00C6FF] to-[#2979FF] text-white hover:from-[#2979FF] hover:to-[#00C6FF] font-body font-semibold shadow-lg shadow-[#00C6FF]/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl px-8 py-4 flex items-center justify-center gap-2 text-lg min-h-[56px] transform hover:scale-[1.02] active:scale-[0.98]"
               >
                 @if (isSubmitting) {
                   <lucide-icon name="loader-2" class="h-6 w-6 animate-spin"></lucide-icon>
                   <span>Enviando...</span>
                 } @else {
-                  <span>Enviar Mensaje</span>
+                  <span>Hablar con un especialista</span>
                   <lucide-icon name="send" class="h-6 w-6"></lucide-icon>
                 }
               </button>
+              
+              <!-- Micro-confianza -->
+              <div class="flex flex-wrap items-center justify-center gap-4 pt-2 text-sm font-body">
+                <div class="flex items-center gap-2 text-[#B0BEC5]">
+                  <lucide-icon name="clock" class="h-4 w-4 text-[#00C6FF]"></lucide-icon>
+                  <span>Respuesta en menos de 24h</span>
+                </div>
+                <div class="flex items-center gap-2 text-[#B0BEC5]">
+                  <lucide-icon name="user-check" class="h-4 w-4 text-[#00C6FF]"></lucide-icon>
+                  <span>Atención directa</span>
+                </div>
+                <div class="flex items-center gap-2 text-[#B0BEC5]">
+                  <lucide-icon name="file-check" class="h-4 w-4 text-[#00C6FF]"></lucide-icon>
+                  <span>Propuesta clara por fases</span>
+                </div>
+              </div>
             </div>
           </form>
         }

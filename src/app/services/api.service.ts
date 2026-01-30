@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, timeout, TimeoutError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Project, ProjectResponse, SingleProjectResponse } from '../models/project.model';
@@ -18,7 +18,8 @@ export class ApiService {
   getProjects(): Observable<ProjectResponse> {
     return this.http.get<ProjectResponse>(`${this.apiUrl}/projects`)
       .pipe(
-        retry(2), // Reintentar 2 veces en caso de error
+        timeout(10000), // Timeout de 10 segundos
+        retry(1), // Reintentar 1 vez en caso de error
         catchError(this.handleError)
       );
   }
@@ -118,7 +119,8 @@ export class ApiService {
   getCompanyValues(): Observable<CompanyValueResponse> {
     return this.http.get<CompanyValueResponse>(`${this.apiUrl}/company-values`)
       .pipe(
-        retry(2),
+        timeout(10000), // Timeout de 10 segundos
+        retry(1), // Reintentar 1 vez en caso de error
         catchError(this.handleError)
       );
   }
@@ -148,18 +150,36 @@ export class ApiService {
   }
 
   // Error Handler
-  private handleError(error: HttpErrorResponse): Observable<never> {
+  private handleError(error: HttpErrorResponse | TimeoutError | Error): Observable<never> {
     let errorMessage = 'Ha ocurrido un error desconocido';
     
-    if (error.error instanceof ErrorEvent) {
-      // Error del lado del cliente
-      errorMessage = `Error: ${error.error.message}`;
+    if (error instanceof TimeoutError) {
+      // Error de timeout
+      errorMessage = 'La solicitud tardó demasiado tiempo. Por favor, verifica tu conexión e intenta nuevamente.';
+      console.error('API Timeout Error:', error);
+    } else if (error instanceof HttpErrorResponse) {
+      if (error.status === 0) {
+        // Error de conexión (backend no disponible, CORS, etc.)
+        errorMessage = `No se pudo conectar con el servidor. Verifica que el backend esté corriendo en ${this.apiUrl}`;
+        console.error('API Connection Error:', {
+          url: error.url,
+          status: error.status,
+          statusText: error.statusText,
+          message: error.message
+        });
+      } else if (error.error instanceof ErrorEvent) {
+        // Error del lado del cliente
+        errorMessage = `Error de conexión: ${error.error.message}`;
+        console.error('API Client Error:', error.error);
+      } else {
+        // Error del lado del servidor
+        errorMessage = error.error?.message || `Error Code: ${error.status}\nMessage: ${error.message}`;
+        console.error('API Server Error:', errorMessage, error);
+      }
     } else {
-      // Error del lado del servidor
-      errorMessage = error.error?.message || `Error Code: ${error.status}\nMessage: ${error.message}`;
+      console.error('API Unknown Error:', error);
     }
     
-    console.error('API Error:', errorMessage);
     return throwError(() => new Error(errorMessage));
   }
 }

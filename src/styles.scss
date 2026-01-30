@@ -8,37 +8,45 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 220 20% 97%;
-    --foreground: 220 40% 10%;
-    --card: 0 0% 100%;
-    --card-foreground: 220 40% 10%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 40% 10%;
-    --primary: 230 60% 20%;
+    /* Codes Labs Corporate Palette */
+    /* Fondo NeoTech Oscuro: #0C1018 */
+    --background: 220 33% 7%;
+    /* Blanco: #FFFFFF */
+    --foreground: 0 0% 100%;
+    --card: 220 33% 9%;
+    --card-foreground: 0 0% 100%;
+    --popover: 220 33% 9%;
+    --popover-foreground: 0 0% 100%;
+    /* Azul Eléctrico (accent principal): #00C6FF */
+    --primary: 193 100% 50%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 15% 95%;
-    --secondary-foreground: 220 40% 15%;
-    --muted: 220 15% 95%;
-    --muted-foreground: 220 20% 50%;
-    --accent: 190 95% 55%;
+    --secondary: 220 33% 12%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 220 33% 12%;
+    /* Gris Titanio (textos secundarios/bordes): #B0BEC5 */
+    --muted-foreground: 200 15% 73%;
+    /* Azul Eléctrico (accent principal): #00C6FF */
+    --accent: 193 100% 50%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 15% 88%;
-    --input: 220 15% 88%;
-    --ring: 230 60% 20%;
+    /* Gris Titanio (bordes): #B0BEC5 */
+    --border: 200 15% 73%;
+    --input: 200 15% 73%;
+    --ring: 193 100% 50%;
     --radius: 0.75rem;
 
-    /* Modern professional gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(230, 60%, 20%), hsl(240, 70%, 35%));
-    --gradient-hero: linear-gradient(135deg, hsl(230, 65%, 12%), hsl(235, 60%, 25%));
-    --gradient-accent: linear-gradient(135deg, hsl(190, 95%, 55%), hsl(200, 90%, 60%));
-    --gradient-card: linear-gradient(145deg, hsl(0, 0%, 100%), hsl(220, 20%, 98%));
+    /* Modern professional gradients - Codes Labs Palette */
+    /* Azul Eléctrico a Cian Luminoso */
+    --gradient-primary: linear-gradient(135deg, hsl(193, 100%, 50%), hsl(216, 100%, 58%));
+    --gradient-hero: linear-gradient(135deg, hsl(220, 33%, 7%), hsl(220, 33%, 10%));
+    --gradient-accent: linear-gradient(135deg, hsl(193, 100%, 50%), hsl(216, 100%, 58%));
+    --gradient-card: linear-gradient(145deg, hsl(220, 33%, 9%), hsl(220, 33%, 11%));
     
-    /* Modern shadows and glows */
-    --glow-primary: 0 10px 50px hsl(230, 60%, 20% / 0.25);
-    --glow-accent: 0 10px 50px hsl(190, 95%, 55% / 0.3);
-    --shadow-elegant: 0 4px 20px hsl(220, 20%, 50% / 0.08);
+    /* Modern shadows and glows - Codes Labs Palette */
+    --glow-primary: 0 10px 50px hsl(193, 100%, 50% / 0.3);
+    --glow-accent: 0 10px 50px hsl(216, 100%, 58% / 0.3);
+    --shadow-elegant: 0 4px 20px hsl(220, 33%, 7% / 0.5);
     
     /* Smooth animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -46,25 +54,26 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 230 45% 8%;
-    --foreground: 0 0% 98%;
-    --card: 230 40% 12%;
-    --card-foreground: 0 0% 98%;
-    --popover: 230 40% 12%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 230 60% 20%;
+    /* Codes Labs Corporate Palette - Dark Mode */
+    --background: 220 33% 7%;
+    --foreground: 0 0% 100%;
+    --card: 220 33% 9%;
+    --card-foreground: 0 0% 100%;
+    --popover: 220 33% 9%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 193 100% 50%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 230 35% 18%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 230 35% 18%;
-    --muted-foreground: 220 15% 65%;
-    --accent: 190 95% 55%;
+    --secondary: 220 33% 12%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 220 33% 12%;
+    --muted-foreground: 200 15% 73%;
+    --accent: 193 100% 50%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 230 35% 18%;
-    --input: 230 35% 18%;
-    --ring: 230 60% 20%;
+    --border: 200 15% 73%;
+    --input: 200 15% 73%;
+    --ring: 193 100% 50%;
   }
 }
 
@@ -74,7 +83,43 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[#0C1018] text-white;
+    background-color: #0C1018;
+    font-family: 'Inter', 'Roboto', sans-serif;
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Codes Labs Corporate Typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', 'Roboto', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  h1 {
+    font-weight: 800;
+  }
+
+  h2 {
+    font-weight: 700;
+  }
+
+  p, span, div, a, button, input, textarea, select, label {
+    font-family: 'Inter', 'Roboto', sans-serif;
+    font-weight: 500;
+  }
+
+  /* Clases de utilidad para tipografías */
+  .font-heading {
+    font-family: 'Poppins', 'Roboto', sans-serif;
+    font-weight: 700;
+  }
+
+  .font-body {
+    font-family: 'Inter', 'Roboto', sans-serif;
+    font-weight: 500;
   }
 }
 
@@ -148,11 +193,11 @@ All colors MUST be HSL.
   animation-delay: 4s;
 }
 
-/* Grid pattern background */
+/* Grid pattern background - Codes Labs Style */
 .bg-grid-pattern {
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    linear-gradient(to right, rgba(0, 198, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 198, 255, 0.1) 1px, transparent 1px);
   background-size: 50px 50px;
 }
 

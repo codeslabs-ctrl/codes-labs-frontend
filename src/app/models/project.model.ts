@@ -14,6 +14,10 @@ export interface Project {
   description: string;
   category: string;
   iconName: string;
+  whatIs?: string;        // Qué es el proyecto/caso de éxito
+  forWho?: string;        // Para quién está dirigido
+  whatSolved?: string;    // Qué problema resolvió
+  result?: string;        // Resultado del proyecto
   stats: { [key: string]: string };
   technologies: string[];
   details?: ProjectDetail[];
