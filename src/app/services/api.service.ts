@@ -20,7 +20,7 @@ export class ApiService {
       .pipe(
         timeout(10000), // Timeout de 10 segundos
         retry(1), // Reintentar 1 vez en caso de error
-        catchError(this.handleError)
+        catchError((err) => this.handleError(err))
       );
   }
 
@@ -28,7 +28,7 @@ export class ApiService {
     return this.http.get<SingleProjectResponse>(`${this.apiUrl}/projects/${id}`)
       .pipe(
         retry(2),
-        catchError(this.handleError)
+        catchError((err) => this.handleError(err))
       );
   }
 
@@ -44,7 +44,7 @@ export class ApiService {
   }): Observable<SingleProjectResponse> {
     return this.http.post<SingleProjectResponse>(`${this.apiUrl}/projects`, projectData)
       .pipe(
-        catchError(this.handleError)
+        catchError((err) => this.handleError(err))
       );
   }
 
@@ -60,14 +60,14 @@ export class ApiService {
   }): Observable<SingleProjectResponse> {
     return this.http.put<SingleProjectResponse>(`${this.apiUrl}/projects/${id}`, projectData)
       .pipe(
-        catchError(this.handleError)
+        catchError((err) => this.handleError(err))
       );
   }
 
   deleteProject(id: string): Observable<{ success: boolean; message: string }> {
     return this.http.delete<{ success: boolean; message: string }>(`${this.apiUrl}/projects/${id}`)
       .pipe(
-        catchError(this.handleError)
+        catchError((err) => this.handleError(err))
       );
   }
 
@@ -81,7 +81,7 @@ export class ApiService {
       `${this.apiUrl}/projects/${projectId}/details`,
       detailData
     ).pipe(
-      catchError(this.handleError)
+      catchError((err) => this.handleError(err))
     );
   }
 
@@ -94,7 +94,7 @@ export class ApiService {
       `${this.apiUrl}/projects/details/${detailId}`,
       detailData
     ).pipe(
-      catchError(this.handleError)
+      catchError((err) => this.handleError(err))
     );
   }
 
@@ -102,7 +102,7 @@ export class ApiService {
     return this.http.delete<{ success: boolean; message: string }>(
       `${this.apiUrl}/projects/details/${detailId}`
     ).pipe(
-      catchError(this.handleError)
+      catchError((err) => this.handleError(err))
     );
   }
 
@@ -111,7 +111,7 @@ export class ApiService {
       `${this.apiUrl}/projects/${projectId}/details`,
       { details }
     ).pipe(
-      catchError(this.handleError)
+      catchError((err) => this.handleError(err))
     );
   }
 
@@ -121,7 +121,7 @@ export class ApiService {
       .pipe(
         timeout(10000), // Timeout de 10 segundos
         retry(1), // Reintentar 1 vez en caso de error
-        catchError(this.handleError)
+        catchError((err) => this.handleError(err))
       );
   }
 
@@ -129,7 +129,7 @@ export class ApiService {
     return this.http.get<SingleCompanyValueResponse>(`${this.apiUrl}/company-values/${id}`)
       .pipe(
         retry(2),
-        catchError(this.handleError)
+        catchError((err) => this.handleError(err))
       );
   }
 
@@ -145,7 +145,7 @@ export class ApiService {
       `${this.apiUrl}/contact/send`,
       formData
     ).pipe(
-      catchError(this.handleError)
+      catchError((err) => this.handleError(err))
     );
   }
 
