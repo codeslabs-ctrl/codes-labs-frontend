@@ -89,7 +89,7 @@ export class DashboardComponent implements OnInit {
         
         // Mensaje más específico para errores de conexión
         if (errorMsg.includes('No se pudo conectar') || errorMsg.includes('conectar con el servidor')) {
-          this.error = 'No se pudo conectar con el servidor. Verifica que el backend esté corriendo en http://localhost:3002';
+          this.error = 'No se pudo conectar con el servidor. Por favor, intenta de nuevo más tarde.';
         } else {
           this.error = errorMsg;
         }

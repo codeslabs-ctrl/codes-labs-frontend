@@ -159,8 +159,8 @@ export class ApiService {
       console.error('API Timeout Error:', error);
     } else if (error instanceof HttpErrorResponse) {
       if (error.status === 0) {
-        // Error de conexión (backend no disponible, CORS, etc.)
-        errorMessage = `No se pudo conectar con el servidor. Verifica que el backend esté corriendo en ${this.apiUrl}`;
+        // Error de conexión (backend no disponible, CORS, etc.) - sin exponer URLs al usuario
+        errorMessage = 'No se pudo conectar con el servidor. Por favor, intenta de nuevo más tarde.';
         console.error('API Connection Error:', {
           url: error.url,
           status: error.status,
