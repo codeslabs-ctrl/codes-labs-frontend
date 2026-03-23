@@ -25,6 +25,7 @@ import { CompanyValue } from '../../models/company-value.model';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  readonly currentYear = new Date().getFullYear();
   projects: Project[] = [];
   companyValues: CompanyValue[] = [];
   isLoading = true;

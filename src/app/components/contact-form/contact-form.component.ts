@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
 import { QuillModule } from 'ngx-quill';
@@ -10,6 +11,7 @@ import { ApiService } from '../../services/api.service';
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     FormsModule,
     ReactiveFormsModule,
     LucideAngularModule,

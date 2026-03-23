@@ -8,11 +8,13 @@ import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
 import { ProjectFormComponent } from './pages/admin/project-form/project-form.component';
 import { ProjectDetailsManagerComponent } from './pages/admin/project-details-manager/project-details-manager.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
 import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   { path: '', component: IndexComponent },
   { path: 'about', component: AboutComponent },
+  { path: 'politica-privacidad', component: PrivacyPolicyComponent },
   { path: 'contacto', component: ContactComponent },
   { path: 'proyectos/:id', component: ProjectDetailComponent },
   { path: 'admin/login', component: AdminLoginComponent },

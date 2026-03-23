@@ -50,6 +50,10 @@ import { LucideAngularModule } from 'lucide-angular';
         <div class="flex justify-center">
           <app-contact-form></app-contact-form>
         </div>
+
+        <footer class="mt-16 pt-8 border-t border-white/10 text-center text-sm text-white/60 font-body">
+          <a routerLink="/politica-privacidad" class="text-[#00C6FF] hover:text-[#2979FF] transition-colors">Política de privacidad</a>
+        </footer>
       </div>
     </div>
   `,
