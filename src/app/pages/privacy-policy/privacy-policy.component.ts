@@ -9,6 +9,4 @@ import { LucideAngularModule } from 'lucide-angular';
   templateUrl: './privacy-policy.component.html',
   styles: []
 })
-export class PrivacyPolicyComponent {
-  readonly currentYear = new Date().getFullYear();
-}
+export class PrivacyPolicyComponent {}

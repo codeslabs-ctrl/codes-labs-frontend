@@ -28,7 +28,7 @@ export class EmailService {
       const emailContent = this.formatProfessionalEmail(formData);
 
       const templateParams = {
-        to_email: 'codes.labs.rc@gmail.com',
+        to_email: 'codes-labs@codes-labs.com',
         from_name: formData.nombreContacto,
         from_email: formData.emailContacto,
         company_name: formData.nombreEmpresa,
